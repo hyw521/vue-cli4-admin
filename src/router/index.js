@@ -205,6 +205,18 @@ export const asyncRoutes = [
       }
     ]
   },
+  {
+    path: '/apiDemo',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/apiDemo/index'),
+        name: 'I18n',
+        meta: { title: 'apiDemo', icon: 'international' }
+      }
+    ]
+  },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
