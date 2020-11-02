@@ -45,6 +45,41 @@ Object.keys(filters).forEach(key => {
 
 Vue.config.productionTip = false
 
+// 防抖
+Vue.prototype.$debounce = (function() {
+  let timer = null
+  return function(fn, delay) {
+    const time = delay || 160
+    const args = arguments
+    var that = this
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      fn.apply(that, args)
+    }, time)
+  }
+}())
+// 节流
+Vue.prototype.$throttle = (function() {
+  let lastTime
+  let timer
+  return function(fn, delay) {
+    const time = delay || 3000
+    const nowTime = Date.now()
+    if (lastTime && nowTime - lastTime < time) {
+      clearTimeout(timer)
+    } else {
+      lastTime = nowTime
+      fn.apply(this)
+    }
+  }
+}())
+const rewirteLog = function() {
+  console.log = (function(log) {
+    return process.env.NODE_ENV == 'development' ? log : function() { }
+  }(console.log))
+}
+rewirteLog()
+
 new Vue({
   el: '#app',
   router,
