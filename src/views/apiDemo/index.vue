@@ -1,27 +1,33 @@
 <template>
-  <div>1111</div>
+  <div>
+    <PictureMagnifier />
+  </div>
 </template>
 
 <script>
-import { getTenantId } from "@/api/demo";
+import { getTenantId } from '@/api/demo'
+import PictureMagnifier from '@/components/PictureMagnifier'
 export default {
-  name: "apiDeom",
+  name: 'ApiDeom',
+  components: {
+    PictureMagnifier
+  },
   data() {
-    return {};
+    return {}
   },
   created() {
-    this.getTenantId();
+    this.getTenantId()
   },
   methods: {
     async getTenantId() {
       try {
-        await getTenantId(1);
+        await getTenantId(1)
       } catch (error) {
-        this.$message.error(error.response.data);
+        this.$message.error(error.response.data)
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style lang="scss">
