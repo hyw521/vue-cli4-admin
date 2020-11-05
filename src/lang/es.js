@@ -27,6 +27,7 @@ export default {
     keyboardChart: 'Keyboard Chart',
     lineChart: 'Gráfico de líneas',
     mixChart: 'Mix Chart',
+    allChart: 'All Chart',
     example: 'Ejemplo',
     nested: 'Rutas anidadass',
     menu1: 'Menu 1',

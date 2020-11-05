@@ -249,6 +249,12 @@ const asyncRoutes = [
         component: 'views/charts/mixChart',
         name: 'MixChart',
         meta: { title: 'mixChart', noCache: true }
+      },
+      {
+        path: 'allCharts',
+        component: 'views/charts/allCharts',
+        name: 'allCharts',
+        meta: { title: 'allCharts', noCache: true }
       }
     ]
   },
