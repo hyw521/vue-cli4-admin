@@ -1,7 +1,11 @@
 <template>
-  <div class="chart-container">
-    <!-- <Histogram height="100%" width="100%" /> -->
-    <WaterPolo height="100%" width="100%" />
+  <div>
+    <div class="chart-container">
+      <Histogram height="100%" width="100%" />
+    </div>
+    <div class="chart-container">
+      <WaterPolo id="water-polo" height="50%" width="100%" />
+    </div>
   </div>
 </template>
 

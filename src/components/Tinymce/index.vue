@@ -1,8 +1,16 @@
 <template>
-  <div :class="{fullscreen:fullscreen}" class="tinymce-container" :style="{width:containerWidth}">
+  <div
+    :class="{ fullscreen: fullscreen }"
+    class="tinymce-container"
+    :style="{ width: containerWidth }"
+  >
     <textarea :id="tinymceId" class="tinymce-textarea" />
     <div class="editor-custom-btn-container">
-      <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK" />
+      <editorImage
+        color="#1890ff"
+        class="editor-upload-btn"
+        @successCBK="imageSuccessCBK"
+      />
     </div>
   </div>
 </template>
@@ -18,7 +26,8 @@ import toolbar from './toolbar'
 import load from './dynamicLoadScript'
 
 // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
-const tinymceCDN = 'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js'
+const tinymceCDN =
+  'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js'
 
 export default {
   name: 'Tinymce',
@@ -27,7 +36,11 @@ export default {
     id: {
       type: String,
       default: function() {
-        return 'vue-tinymce-' + +new Date() + ((Math.random() * 1000).toFixed(0) + '')
+        return (
+          'vue-tinymce-' +
+          +new Date() +
+          ((Math.random() * 1000).toFixed(0) + '')
+        )
       }
     },
     value: {
@@ -63,10 +76,10 @@ export default {
       tinymceId: this.id,
       fullscreen: false,
       languageTypeList: {
-        'en': 'en',
-        'zh': 'zh_CN',
-        'es': 'es_MX',
-        'ja': 'ja'
+        en: 'en',
+        zh: 'zh_CN',
+        es: 'es_MX',
+        ja: 'ja'
       }
     }
   },
@@ -76,7 +89,8 @@ export default {
     },
     containerWidth() {
       const width = this.width
-      if (/^[\d]+(\.[\d]+)?$/.test(width)) { // matches `100`, `'100'`
+      if (/^[\d]+(\.[\d]+)?$/.test(width)) {
+        // matches `100`, `'100'`
         return `${width}px`
       }
       return width
@@ -86,7 +100,8 @@ export default {
     value(val) {
       if (!this.hasChange && this.hasInit) {
         this.$nextTick(() =>
-          window.tinymce.get(this.tinymceId).setContent(val || ''))
+          window.tinymce.get(this.tinymceId).setContent(val || '')
+        )
       }
     },
     language() {
@@ -130,6 +145,7 @@ export default {
         toolbar: this.toolbar.length > 0 ? this.toolbar : toolbar,
         menubar: this.menubar,
         plugins: plugins,
+        // images_upload_url: "http://192.168.200.23:9034/api/DataFile/Post", //上传文件url
         end_container_on_empty_block: true,
         powerpaste_word_import: 'clean',
         code_dialog_height: 450,
@@ -140,7 +156,7 @@ export default {
         default_link_target: '_blank',
         link_title: false,
         nonbreaking_force_tab: true, // inserting nonbreaking space &nbsp; need Nonbreaking Space Plugin
-        init_instance_callback: editor => {
+        init_instance_callback: (editor) => {
           if (_this.value) {
             editor.setContent(_this.value)
           }
@@ -158,7 +174,7 @@ export default {
         // it will try to keep these URLs intact
         // https://www.tiny.cloud/docs-3x/reference/configuration/Configuration3x@convert_urls/
         // https://stackoverflow.com/questions/5196205/disable-tinymce-absolute-to-relative-url-conversions
-        convert_urls: false
+        convert_urls: false,
         // 整合七牛上传
         // images_dataimg_filter(img) {
         //   setTimeout(() => {
@@ -174,24 +190,27 @@ export default {
         //   }, 0);
         //   return img
         // },
-        // images_upload_handler(blobInfo, success, failure, progress) {
-        //   progress(0);
-        //   const token = _this.$store.getters.token;
-        //   getToken(token).then(response => {
-        //     const url = response.data.qiniu_url;
-        //     const formData = new FormData();
-        //     formData.append('token', response.data.qiniu_token);
-        //     formData.append('key', response.data.qiniu_key);
-        //     formData.append('file', blobInfo.blob(), url);
-        //     upload(formData).then(() => {
-        //       success(url);
-        //       progress(100);
-        //     })
-        //   }).catch(err => {
-        //     failure('出现未知问题，刷新页面，或者联系程序员')
-        //     console.log(err);
-        //   });
-        // },
+        images_upload_handler(blobInfo, success, failure, progress) {
+          progress(0)
+          const xhr = new XMLHttpRequest()
+          xhr.withCredentials = false
+          xhr.open('POST', 'http://192.168.200.23:9034/api/DataFile/Post')
+          xhr.setRequestHeader(
+            'Authorization',
+            'Bearer 536b589e-6e61-42e9-b15a-014f0041d672'
+          )
+          xhr.onload = function(e) {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+              const res = JSON.parse(xhr.responseText)
+              success('http://192.168.200.23:9034/' + res.Path)
+              progress(100)
+            } else {
+            }
+          }
+          const formData = new FormData()
+          formData.append('file', blobInfo.blob())
+          xhr.send(formData)
+        }
       })
     },
     destroyTinymce() {
@@ -211,7 +230,11 @@ export default {
       window.tinymce.get(this.tinymceId).getContent()
     },
     imageSuccessCBK(arr) {
-      arr.forEach(v => window.tinymce.get(this.tinymceId).insertContent(`<img class="wscnph" src="${v.url}" >`))
+      arr.forEach((v) =>
+        window.tinymce
+          .get(this.tinymceId)
+          .insertContent(`<img class="wscnph" src="${v.url}" >`)
+      )
     }
   }
 }
