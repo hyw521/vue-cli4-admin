@@ -146,6 +146,9 @@ export default {
         menubar: this.menubar,
         plugins: plugins,
         // images_upload_url: "http://192.168.200.23:9034/api/DataFile/Post", //上传文件url
+        fontsize_formats: '12px 14px 16px 18px 20px 24px 26px 28px 30px 36px',
+        font_formats:
+          '默认=Verdana;微软雅黑=Microsoft YaHei;苹果苹方=PingFang SC;宋体=simsun,serif;',
         end_container_on_empty_block: true,
         powerpaste_word_import: 'clean',
         code_dialog_height: 450,
