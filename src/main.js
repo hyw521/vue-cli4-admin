@@ -50,11 +50,9 @@ Vue.prototype.$debounce = (function() {
   let timer = null
   return function(fn, delay) {
     const time = delay || 160
-    const args = arguments
-    var that = this
     clearTimeout(timer)
     timer = setTimeout(() => {
-      fn.apply(that, args)
+      fn.apply(this)
     }, time)
   }
 }())

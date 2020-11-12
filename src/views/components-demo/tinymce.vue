@@ -1,9 +1,11 @@
 <template>
-  <div class="components-container">
-    <div>
-      <tinymce v-model="content" :height="300" />
+  <div>
+    <div class="components-container">
+      <div>
+        <tinymce v-model="content" :height="300" />
+      </div>
+      <!-- <div class="editor-content" v-html="content" /> -->
     </div>
-    <div class="editor-content" v-html="content" />
   </div>
 </template>
 

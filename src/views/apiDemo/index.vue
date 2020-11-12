@@ -8,7 +8,7 @@
 import { getTenantId } from '@/api/demo'
 import PictureMagnifier from '@/components/PictureMagnifier'
 export default {
-  name: 'ApiDeom',
+  name: 'ApiDemo',
   components: {
     PictureMagnifier
   },

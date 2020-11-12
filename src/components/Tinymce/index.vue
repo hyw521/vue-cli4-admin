@@ -4,7 +4,7 @@
     class="tinymce-container"
     :style="{ width: containerWidth }"
   >
-    <textarea :id="tinymceId" class="tinymce-textarea" />
+    <div :id="tinymceId" class="tinymce-div" style="border: 1px solid #eee" />
     <div class="editor-custom-btn-container">
       <editorImage
         color="#1890ff"
@@ -137,6 +137,7 @@ export default {
     initTinymce() {
       const _this = this
       window.tinymce.init({
+        inline: true,
         language: this.language,
         selector: `#${this.tinymceId}`,
         height: this.height,
@@ -178,21 +179,6 @@ export default {
         // https://www.tiny.cloud/docs-3x/reference/configuration/Configuration3x@convert_urls/
         // https://stackoverflow.com/questions/5196205/disable-tinymce-absolute-to-relative-url-conversions
         convert_urls: false,
-        // 整合七牛上传
-        // images_dataimg_filter(img) {
-        //   setTimeout(() => {
-        //     const $image = $(img);
-        //     $image.removeAttr('width');
-        //     $image.removeAttr('height');
-        //     if ($image[0].height && $image[0].width) {
-        //       $image.attr('data-wscntype', 'image');
-        //       $image.attr('data-wscnh', $image[0].height);
-        //       $image.attr('data-wscnw', $image[0].width);
-        //       $image.addClass('wscnph');
-        //     }
-        //   }, 0);
-        //   return img
-        // },
         images_upload_handler(blobInfo, success, failure, progress) {
           progress(0)
           const xhr = new XMLHttpRequest()

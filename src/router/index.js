@@ -204,6 +204,30 @@ export const asyncRoutes = [
       }
     ]
   },
+  {
+    path: '/directoryRolling',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/directoryRolling/index'),
+        name: 'I18n',
+        meta: { title: 'directoryRolling', icon: 'international' }
+      }
+    ]
+  },
+  {
+    path: '/editInner',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/editInner/index'),
+        name: 'I18n',
+        meta: { title: 'editInner', icon: 'international' }
+      }
+    ]
+  },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
