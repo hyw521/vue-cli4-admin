@@ -71,6 +71,11 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/editInner',
+    component: () => import('@/views/editInner/index'),
+    hidden: true
+  },
+  {
     path: '/',
     component: Layout,
     redirect: '/dashboard',
@@ -216,18 +221,18 @@ export const asyncRoutes = [
       }
     ]
   },
-  {
-    path: '/editInner',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/editInner/index'),
-        name: 'I18n',
-        meta: { title: 'editInner', icon: 'international' }
-      }
-    ]
-  },
+  // {
+  //   path: '/editInner',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/editInner/index'),
+  //       name: 'I18n',
+  //       meta: { title: 'editInner', icon: 'international' }
+  //     }
+  //   ]
+  // },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

@@ -4,14 +4,14 @@
     class="tinymce-container"
     :style="{ width: containerWidth }"
   >
-    <div :id="tinymceId" class="tinymce-div" style="border: 1px solid #eee" />
-    <div class="editor-custom-btn-container">
+    <div :id="tinymceId" class="tinymce-div" />
+    <!-- <div class="editor-custom-btn-container">
       <editorImage
         color="#1890ff"
         class="editor-upload-btn"
         @successCBK="imageSuccessCBK"
       />
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -230,9 +230,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "./tinymce.scss";
 .tinymce-container {
   position: relative;
   line-height: normal;
+  .tinymce-div {
+  }
 }
 
 .tinymce-container {

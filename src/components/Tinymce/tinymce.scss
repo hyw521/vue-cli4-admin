@@ -1,0 +1,14 @@
+.tinymce-container {
+  ::v-deep{
+    .mce-content-body {
+      h1 {
+        margin: 0px;
+      }
+      p {
+        text-indent: 2em;
+        color: red;
+        margin: 0px;
+      }
+    }
+  }
+}
