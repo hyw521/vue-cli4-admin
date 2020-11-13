@@ -66,7 +66,7 @@ export default {
           levalTwoList: []
         },
         {
-          name: { content: '<h1>我是第四个一级目录</h1>', index: '4' },
+          name: { content: "<h1 id='red'>我是第四个一级目录</h1>", index: '4' },
           levalTwoList: [
             { name: { content: '<h2>2级目录four</h2>', index: '41' }},
             { name: { content: '<h2>2级目录five</h2>', index: '42' }}

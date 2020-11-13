@@ -19,7 +19,7 @@
         class="leval-one"
         @close="onDel(index, directory)"
       >
-        <div :title="item.name.content | filterOneDirectory">
+        <div :title="item.name.content | filterOneDirectory" @click="hrefTo()">
           {{ item.name.content | filterOneDirectory }}
         </div>
         <draggable
@@ -58,17 +58,19 @@ export default {
   filters: {
     filterOneDirectory(val) {
       let target = ''
-      const rgValue = val.match(/^<h1>.*<\/h1>/i)
+      const rgValue = val.match(/^<h1.*>.*<\/h1>/i)
       if (rgValue !== null) {
-        target = rgValue[0].replace(/<h1>|<\/h1>|&nbsp;/gi, '')
+        target = rgValue[0].replace(/<\/h1>|&nbsp;/gi, '')
+        target = target.replace(/<h1.*>/gi, '')
       }
       return target
     },
     filterTwoDirectory(val) {
       let target = ''
-      const rgValue = val.match(/^<h2>.*<\/h2>/i)
+      const rgValue = val.match(/^<h2.*>.*<\/h2>/i)
       if (rgValue !== null) {
-        target = rgValue[0].replace(/<h2>|<\/h2>|&nbsp;/gi, '')
+        target = rgValue[0].replace(/<\/h2>|&nbsp;/i, '')
+        target = target.replace(/<h2.*>/i, '')
       }
       return target
     }
@@ -96,6 +98,12 @@ export default {
     },
     onDel(index, directory) {
       directory.splice(index, 1)
+    },
+    // 锚点跳转
+    hrefTo() {
+      document.querySelector('#red').scrollIntoView(true)
+      console.log(window.scrollY)
+      window.scrollY = window.scrollY + 68
     }
   }
 }
