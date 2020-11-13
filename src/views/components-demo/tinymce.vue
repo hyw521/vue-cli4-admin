@@ -2,7 +2,7 @@
   <div>
     <div class="components-container">
       <div>
-        <tinymce v-model="contentObj.content" :height="300" />
+        <tinymce v-model="contentObj.content" v-bind="$attrs" />
       </div>
       <!-- <div class="editor-content" v-html="content" /> -->
     </div>
@@ -37,6 +37,7 @@ export default {
   left: 15% !important;
   border: 0px !important;
   position: fixed !important;
+  z-index: 999;
 }
 </style>
 

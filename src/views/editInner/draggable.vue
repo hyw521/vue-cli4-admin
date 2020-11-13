@@ -33,6 +33,7 @@
         >
           <li
             v-for="n in item.levalTwoList"
+            v-if="n.name.content"
             :key="n.index"
             closable
             class="leval-two"

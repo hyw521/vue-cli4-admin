@@ -136,8 +136,12 @@ export default {
     },
     initTinymce() {
       const _this = this
+      let state = true
+      if (this.$attrs.flag) {
+        state = false
+      } // 只用来展示头的富文本框不采用内联模式
       window.tinymce.init({
-        inline: true,
+        inline: state,
         language: this.language,
         selector: `#${this.tinymceId}`,
         height: this.height,
@@ -149,7 +153,7 @@ export default {
         // images_upload_url: "http://192.168.200.23:9034/api/DataFile/Post", //上传文件url
         fontsize_formats: '12px 14px 16px 18px 20px 24px 26px 28px 30px 36px',
         font_formats:
-          '默认=Verdana;微软雅黑=Microsoft YaHei;苹果苹方=PingFang SC;宋体=simsun,serif;',
+          '默认=Helvetica Neue;微软雅黑=Microsoft YaHei;苹果苹方=PingFang SC;宋体=simsun;',
         end_container_on_empty_block: true,
         powerpaste_word_import: 'clean',
         code_dialog_height: 450,

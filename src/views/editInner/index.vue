@@ -1,27 +1,32 @@
 <template>
   <div>
-    <div class="top-inner-left">
-      <el-button @click="addLevalOne">添加一级目录</el-button>
-      <el-button @click="addLevalTwo">添加二级目录</el-button>
-      <el-button @click="see">查看内容</el-button>
+    <div class="top-nav">
+      <div class="top-inner-right">
+        <el-button @click="see">预览</el-button>
+      </div>
     </div>
+
     <div class="edit-container">
       <div class="directory">
         <draggable :directory="contentList" />
       </div>
       <div class="content-inner">
+        <div class="fake-tinymc">
+          <tinymce :content-obj="fake" :flag="flag" />
+        </div>
+
         <div
           v-for="item in contentList"
           :key="item.name.index"
           class="tinymce-div"
         >
-          <tinymce :content-obj="item.name" />
+          <tinymce v-if="item.name.content" :content-obj="item.name" />
           <div
             v-for="n in item.levalTwoList"
             :key="n.name.index"
             class="tinymce-div"
           >
-            <tinymce :content-obj="n.name" />
+            <tinymce v-if="n.name.content" :content-obj="n.name" />
           </div>
         </div>
       </div>
@@ -38,6 +43,10 @@ export default {
   },
   data() {
     return {
+      flag: true,
+      fake: {
+        content: '<h1>我是第一个一级目录</h1>'
+      }, // 没有的富文本框只是显示头给用户看的
       contentList: [
         {
           name: { content: '<h1>我是第一个一级目录</h1>', index: '1' },
@@ -64,24 +73,16 @@ export default {
           ]
         }
       ]
-      // contentList: [
-      //   {
-      //     content: `<ul>
-      //   <li>Our <a href="//www.tinymce.com/docs/">documentation</a> is a great resource for learning how to configure TinyMCE.</li><li>Have a specific question? Visit the <a href="https://community.tinymce.com/forum/">Community Forum</a>.</li><li>We also offer enterprise grade support as part of <a href="https://tinymce.com/pricing">TinyMCE premium subscriptions</a>.</li>
-      // </ul>`,
-      //     directory: "11111",
-      //   },
-      //   { content: "<h1>胡永伟</h1>", directory: "22222" },
-      // ],
     }
   },
   methods: {
     addLevalOne() {
-      const obj = {
-        content: '<p style="color:red">111111</p>',
-        directory: '55555'
-      }
-      this.contentList.push(obj)
+      const userSelection = window.getSelection()
+      const parentNode = userSelection.baseNode.parentNode
+      console.log(userSelection)
+      console.log(userSelection.baseNode.parentNode)
+      const addInner = '你是猪吗'
+      parentNode.innerText = parentNode.innerText + addInner
     },
     addLevalTwo() {},
     see() {
@@ -92,20 +93,20 @@ export default {
 </script>
 
 <style lang="scss" scope>
-.content-inner {
-  border: 1px solid #eee;
-  margin: 50px;
-  flex-grow: 1;
-}
-.top-inner-left {
+.top-nav {
   position: fixed;
   top: 0px;
-  left: 0px;
-  height: 103px;
-  width: 15%;
+  right: 0px;
+  height: 68px;
+  width: 100%;
   background-color: white;
-  z-index: 999;
+  z-index: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  .top-inner-right {
+    float: right;
+  }
 }
+
 .edit-container {
   margin: 123px auto 0px;
   display: flex;
@@ -118,6 +119,21 @@ export default {
   .directory {
     margin-left: 20px;
     width: 260px;
+    position: fixed;
+  }
+  .content-inner {
+    border: 1px solid #eee;
+    margin: 50px;
+    margin-left: 310px;
+    flex-grow: 1;
+    .fake-tinymc {
+      .mce-edit-area {
+        display: none;
+      }
+      .mce-statusbar {
+        display: none;
+      }
+    }
   }
 }
 </style>
