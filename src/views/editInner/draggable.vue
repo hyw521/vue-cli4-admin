@@ -13,13 +13,15 @@
       @end="dragging = false"
     >
       <li
-        v-for="(item, index) in directory"
-        :key="index"
+        v-for="item in directory"
+        :key="item.index"
         closable
         class="leval-one"
         @close="onDel(index, directory)"
       >
-        <div>{{ item.name }}</div>
+        <div :title="item.name.content | filterOneDirectory">
+          {{ item.name.content | filterOneDirectory }}
+        </div>
         <draggable
           :list="item.levalTwoList"
           :disabled="!enabled"
@@ -30,13 +32,15 @@
           @end="dragging = false"
         >
           <li
-            v-for="(n, index) in item.levalTwoList"
-            :key="index"
+            v-for="n in item.levalTwoList"
+            :key="n.index"
             closable
             class="leval-two"
             @close="onDel(index, item.levalTwoList)"
           >
-            <span>{{ n.name }}</span>
+            <span :title="n.name.content | filterTwoDirectory">{{
+              n.name.content | filterTwoDirectory
+            }}</span>
           </li>
         </draggable>
       </li>
@@ -50,27 +54,34 @@ export default {
   components: {
     draggable
   },
+  filters: {
+    filterOneDirectory(val) {
+      let target = ''
+      const rgValue = val.match(/^<h1>.*<\/h1>/i)
+      if (rgValue !== null) {
+        target = rgValue[0].replace(/<h1>|<\/h1>|&nbsp;/gi, '')
+      }
+      return target
+    },
+    filterTwoDirectory(val) {
+      let target = ''
+      const rgValue = val.match(/^<h2>.*<\/h2>/i)
+      if (rgValue !== null) {
+        target = rgValue[0].replace(/<h2>|<\/h2>|&nbsp;/gi, '')
+      }
+      return target
+    }
+  },
+  props: {
+    directory: {
+      type: Array,
+      default: []
+    }
+  },
   data() {
     return {
       enabled: true,
-      dragging: false,
-      directory: [
-        {
-          name: '我是第一个一级目录',
-          levalTwoList: [
-            { name: '2级目录one' },
-            { name: '2级目录' },
-            { name: '2级目录12份饭' },
-            { name: '2级目大苏打录' }
-          ]
-        },
-        { name: '我是第二个一级目录', levalTwoList: [] },
-        { name: '我是第三个一级目录', levalTwoList: [] },
-        {
-          name: '我是第四个一级目录',
-          levalTwoList: [{ name: '2级目录four' }, { name: '2级目录five' }]
-        }
-      ]
+      dragging: false
     }
   },
   methods: {
@@ -91,6 +102,7 @@ export default {
 
 <style lang="scss">
 #directory {
+  width: 100%;
   .all-leval-one {
     padding-top: 30px;
     .leval-one {
@@ -100,17 +112,37 @@ export default {
       margin-bottom: 16px;
       list-style: none;
       font-size: 16px;
+      & > div {
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
       .all-leval-two {
         .leval-two {
           font-size: 14px;
           color: #837f7f;
-          list-style: disc;
-          padding-left: 5px;
           margin-top: 6px;
+          position: relative;
+          &:before {
+            content: "";
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            left: 8px;
+            top: 11px;
+            border-radius: 1px;
+            background: #bbb;
+          }
           span {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
             display: inline-block;
             line-height: 20px;
             padding-top: 2px;
+            padding-left: 20px;
           }
         }
       }
