@@ -14,9 +14,10 @@
     >
       <li
         v-for="item in directory"
-        :key="item.index"
+        :key="item.name.index"
         closable
         class="leval-one"
+        :class="{ isCurrent: item.name.isCurrent }"
         @close="onDel(index, directory)"
       >
         <div
@@ -38,9 +39,10 @@
           <li
             v-for="n in item.levalTwoList"
             v-if="n.name.content"
-            :key="n.index"
+            :key="n.name.index"
             closable
             class="leval-two"
+            :class="{ isCurrent: n.name.isCurrent }"
             @close="onDel(index, item.levalTwoList)"
           >
             <span
@@ -91,29 +93,26 @@ export default {
     return {
       enabled: true,
       dragging: false,
-      topHeightList: []
+      topHeightList: [],
+      timer: null
     }
   },
   mounted() {
     setTimeout(() => {
       this.getTopHeightList()
-      const scrollCallback = () => {
-        this.$debounce(() => {
-          const top = $scrollBox.scrollTop
-          const tt = $scrollBox.clientHeight
-          let num = 0
-          for (let n = 0; n < 7; n++) {
-            if (top >= n * tt && top <= (n + 1) * tt) {
-              num = n
-            }
-            this.isSelected = liIds[num] + '-selected'
-          }
-        }, 100)
-      }
-      $scrollBox.addEventListener('scroll', scrollCallback)
+      window.addEventListener('scroll', this.scrollCallback)
+      this.timer = setInterval(() => {
+        this.getTopHeightList()
+        // 隔10秒更新下数组，因为编辑内容后高度就发生变化了
+      }, 10000)
     }, 1000)
   },
+  beforeDestroy() {
+    this.timer = null
+    window.removeEventListener('scroll', this.scrollCallback)
+  },
   methods: {
+    // 获取每个目录到顶部的距离数组
     getTopHeightList() {
       this.topHeightList = []
       const oneTinymceDivs = document.querySelectorAll(
@@ -131,6 +130,37 @@ export default {
         this.topHeightList.push({ topHeight, index })
       }
       console.log(this.topHeightList)
+    },
+    scrollCallback() {
+      this.$debounce(() => {
+        const top = window.scrollY
+        // console.log(top, "top");
+        try {
+          this.topHeightList.forEach((item) => {
+            if (item.topHeight >= top) {
+              console.log(item.index)
+              this.directory.map((x) => {
+                if (x.name.index === item.index) {
+                  x.name.isCurrent = true
+                  x.levalTwoList.map((y) => {
+                    if (y.name.index === item.index) {
+                      y.name.isCurrent = true
+                    } else {
+                      y.name.isCurrent = false
+                    }
+                  })
+                } else {
+                  x.name.isCurrent = false
+                }
+              })
+              console.log(this.directory)
+              throw '已经满足条件跳出循环'
+            }
+          })
+        } catch (error) {
+          // 抛出异常跳出forEach循环
+        }
+      }, 50)
     },
     start(e) {
       if (e[0].name === '') {
@@ -238,6 +268,14 @@ export default {
             padding-left: 20px;
           }
         }
+      }
+    }
+    .isCurrent {
+      & > div {
+        color: red;
+      }
+      & > span {
+        color: red;
       }
     }
   }

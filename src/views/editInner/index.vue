@@ -54,31 +54,40 @@ export default {
           name: {
             content: '<h1>我是第一个一级目录</h1>',
             index: '1',
-            leval: 'one'
+            leval: 'one',
+            isCurrent: false
           },
           levalTwoList: [
             {
               name: {
                 content: '<h2>2级目录one</h2>',
                 index: '11',
-                leval: 'two'
+                leval: 'two',
+                isCurrent: false
               }
             },
             {
-              name: { content: '<h2>2级目录</h2>', index: '12 ', leval: 'two' }
+              name: {
+                content: '<h2>2级目录</h2>',
+                index: '12 ',
+                leval: 'two',
+                isCurrent: false
+              }
             },
             {
               name: {
                 content: '<h2>2级目录12份饭</h2>',
                 index: '13',
-                leval: 'two'
+                leval: 'two',
+                isCurrent: false
               }
             },
             {
               name: {
                 content: '<h2>2级目大苏打录</h2>',
                 index: '14 ',
-                leval: 'two'
+                leval: 'two',
+                isCurrent: false
               }
             }
           ]
@@ -87,7 +96,8 @@ export default {
           name: {
             content: '<h1>我是第二个一级目录</h1>',
             index: '2',
-            leval: 'one'
+            leval: 'one',
+            isCurrent: false
           },
           levalTwoList: []
         },
@@ -95,7 +105,8 @@ export default {
           name: {
             content: '<h1>我是第三个一级目录</h1>',
             index: '3',
-            leval: 'one'
+            leval: 'one',
+            isCurrent: false
           },
           levalTwoList: []
         },
@@ -103,21 +114,24 @@ export default {
           name: {
             content: "<h1 id='red'>我是第四个一级目录</h1>",
             index: '4',
-            leval: 'one'
+            leval: 'one',
+            isCurrent: false
           },
           levalTwoList: [
             {
               name: {
                 content: '<h2>2级目录four</h2>',
                 index: '41',
-                leval: 'two'
+                leval: 'two',
+                isCurrent: false
               }
             },
             {
               name: {
                 content: '<h2>2级目录five</h2>',
                 index: '42',
-                leval: 'two'
+                leval: 'two',
+                isCurrent: false
               }
             }
           ]
