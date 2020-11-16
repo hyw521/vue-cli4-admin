@@ -19,7 +19,11 @@
         class="leval-one"
         @close="onDel(index, directory)"
       >
-        <div :title="item.name.content | filterOneDirectory" @click="hrefTo()">
+        <div
+          :title="item.name.content | filterOneDirectory"
+          :class="'one-directory' + item.name.index"
+          @click="hrefTo(item)"
+        >
           {{ item.name.content | filterOneDirectory }}
         </div>
         <draggable
@@ -39,9 +43,11 @@
             class="leval-two"
             @close="onDel(index, item.levalTwoList)"
           >
-            <span :title="n.name.content | filterTwoDirectory">{{
-              n.name.content | filterTwoDirectory
-            }}</span>
+            <span
+              :title="n.name.content | filterTwoDirectory"
+              :class="'two-directory' + n.name.index"
+              @click="hrefTo(n)"
+            >{{ n.name.content | filterTwoDirectory }}</span>
           </li>
         </draggable>
       </li>
@@ -84,26 +90,104 @@ export default {
   data() {
     return {
       enabled: true,
-      dragging: false
+      dragging: false,
+      topHeightList: []
     }
   },
+  mounted() {
+    setTimeout(() => {
+      this.getTopHeightList()
+      const scrollCallback = () => {
+        this.$debounce(() => {
+          const top = $scrollBox.scrollTop
+          const tt = $scrollBox.clientHeight
+          let num = 0
+          for (let n = 0; n < 7; n++) {
+            if (top >= n * tt && top <= (n + 1) * tt) {
+              num = n
+            }
+            this.isSelected = liIds[num] + '-selected'
+          }
+        }, 100)
+      }
+      $scrollBox.addEventListener('scroll', scrollCallback)
+    }, 1000)
+  },
   methods: {
+    getTopHeightList() {
+      this.topHeightList = []
+      const oneTinymceDivs = document.querySelectorAll(
+        '.content-inner>.one-tinymce-div'
+      )
+      for (let i = 0; i < oneTinymceDivs.length; i++) {
+        const topHeight = (function(i, oneTinymceDivs) {
+          let value = 0
+          for (let j = 0; j < i; j++) {
+            value += oneTinymceDivs[j].offsetHeight
+          }
+          return value
+        })(i, oneTinymceDivs)
+        const index = oneTinymceDivs[i].className.substring(27)
+        this.topHeightList.push({ topHeight, index })
+      }
+      console.log(this.topHeightList)
+    },
     start(e) {
       if (e[0].name === '') {
         return false
       }
     },
-    checkMove: function(e) {
-      window.console.log(e)
-    },
+    checkMove: function(e) {},
     onDel(index, directory) {
       directory.splice(index, 1)
     },
     // 锚点跳转
-    hrefTo() {
-      document.querySelector('#red').scrollIntoView(true)
-      console.log(window.scrollY)
-      window.scrollY = window.scrollY + 68
+    hrefTo(query) {
+      let topHeight = 0
+      if (query.name.leval === 'one') {
+        const Class = 'one-tinymce' + query.name.index
+        const tinymceDivs = document.querySelectorAll(
+          '.content-inner>.one-tinymce-div'
+        )
+        for (let i = 0; i < tinymceDivs.length; i++) {
+          if (tinymceDivs[i].className.includes(Class)) {
+            // console.log(tinymceDivs[i].className, "break");
+            break
+          } else {
+            topHeight += tinymceDivs[i].offsetHeight
+            // console.log(tinymceDivs[i].className);
+          }
+        }
+      } else {
+        const Class = 'two-tinymce' + query.name.index
+        const selfDom = document.querySelector('.' + Class)
+        const parent = selfDom.parentNode
+        const allChildDoms = parent.childNodes
+        const oneLevalTinymceDivs = document.querySelectorAll(
+          '.content-inner>.one-tinymce-div'
+        )
+        for (let i = 0; i < oneLevalTinymceDivs.length; i++) {
+          if (oneLevalTinymceDivs[i].className.includes(parent.className)) {
+            // console.log(tinymceDivs[i].className, "break");
+            break
+          } else {
+            topHeight += oneLevalTinymceDivs[i].offsetHeight
+            // console.log(tinymceDivs[i].className);
+          }
+        }
+        for (let j = 0; j < allChildDoms.length; j++) {
+          if (allChildDoms[j].className.includes(Class)) {
+            // console.log(tinymceDivs[i].className, "break");
+            break
+          } else {
+            topHeight += allChildDoms[j].offsetHeight
+            // console.log(tinymceDivs[i].className);
+          }
+        }
+      }
+      // document.querySelector("#red").scrollIntoView(false);
+      window.scrollTo(0, topHeight)
+      console.log(window.scrollY, topHeight)
     }
   }
 }

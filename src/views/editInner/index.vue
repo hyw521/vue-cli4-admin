@@ -18,13 +18,15 @@
         <div
           v-for="item in contentList"
           :key="item.name.index"
-          class="tinymce-div"
+          class="one-tinymce-div"
+          :class="'one-tinymce' + item.name.index"
         >
           <tinymce v-if="item.name.content" :content-obj="item.name" />
           <div
             v-for="n in item.levalTwoList"
             :key="n.name.index"
-            class="tinymce-div"
+            class="two-tinymce-div"
+            :class="'two-tinymce' + n.name.index"
           >
             <tinymce v-if="n.name.content" :content-obj="n.name" />
           </div>
@@ -49,27 +51,75 @@ export default {
       }, // 没有的富文本框只是显示头给用户看的
       contentList: [
         {
-          name: { content: '<h1>我是第一个一级目录</h1>', index: '1' },
+          name: {
+            content: '<h1>我是第一个一级目录</h1>',
+            index: '1',
+            leval: 'one'
+          },
           levalTwoList: [
-            { name: { content: '<h2>2级目录one</h2>', index: '11' }},
-            { name: { content: '<h2>2级目录</h2>', index: '12 ' }},
-            { name: { content: '<h2>2级目录12份饭</h2>', index: '13' }},
-            { name: { content: '<h2>2级目大苏打录</h2>', index: '14 ' }}
+            {
+              name: {
+                content: '<h2>2级目录one</h2>',
+                index: '11',
+                leval: 'two'
+              }
+            },
+            {
+              name: { content: '<h2>2级目录</h2>', index: '12 ', leval: 'two' }
+            },
+            {
+              name: {
+                content: '<h2>2级目录12份饭</h2>',
+                index: '13',
+                leval: 'two'
+              }
+            },
+            {
+              name: {
+                content: '<h2>2级目大苏打录</h2>',
+                index: '14 ',
+                leval: 'two'
+              }
+            }
           ]
         },
         {
-          name: { content: '<h1>我是第二个一级目录</h1>', index: '2' },
+          name: {
+            content: '<h1>我是第二个一级目录</h1>',
+            index: '2',
+            leval: 'one'
+          },
           levalTwoList: []
         },
         {
-          name: { content: '<h1>我是第三个一级目录</h1>', index: '3 ' },
+          name: {
+            content: '<h1>我是第三个一级目录</h1>',
+            index: '3',
+            leval: 'one'
+          },
           levalTwoList: []
         },
         {
-          name: { content: "<h1 id='red'>我是第四个一级目录</h1>", index: '4' },
+          name: {
+            content: "<h1 id='red'>我是第四个一级目录</h1>",
+            index: '4',
+            leval: 'one'
+          },
           levalTwoList: [
-            { name: { content: '<h2>2级目录four</h2>', index: '41' }},
-            { name: { content: '<h2>2级目录five</h2>', index: '42' }}
+            {
+              name: {
+                content: '<h2>2级目录four</h2>',
+                index: '41',
+                leval: 'two'
+              }
+            },
+            {
+              name: {
+                content: '<h2>2级目录five</h2>',
+                index: '42',
+                leval: 'two'
+              }
+            }
           ]
         }
       ]
