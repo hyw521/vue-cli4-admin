@@ -10,7 +10,7 @@
       class="all-leval-one"
       ghost-class="ghost"
       @start="start(directory)"
-      @end="dragging = false"
+      @end="end"
     >
       <li
         v-for="item in directory"
@@ -34,7 +34,7 @@
           class="all-leval-two"
           ghost-class="ghost"
           @start="start(item.levalTwoList)"
-          @end="dragging = false"
+          @end="end"
         >
           <li
             v-for="n in item.levalTwoList"
@@ -94,7 +94,8 @@ export default {
       enabled: true,
       dragging: false,
       topHeightList: [],
-      timer: null
+      timer: null,
+      ITEM: { name: { isCurrent: false }} // 解决当显示二级目录是，滚动条上滑满足了一级目录但二级目录没取消的问题
     }
   },
   mounted() {
@@ -119,38 +120,63 @@ export default {
         '.content-inner>.one-tinymce-div'
       )
       for (let i = 0; i < oneTinymceDivs.length; i++) {
-        const topHeight = (function(i, oneTinymceDivs) {
-          let value = 0
-          for (let j = 0; j < i; j++) {
-            value += oneTinymceDivs[j].offsetHeight
+        const dom = oneTinymceDivs[i]
+        const childDoms = dom.childNodes // 获取二级目录dom元素
+        let index
+        let topHeight = 0
+        let reuseValue = topHeight // 复用一级目录的值计算二级目录的值
+        for (let c = 0; c < childDoms.length; c++) {
+          // 获取二级目录距离顶部的高度
+          if (childDoms[c].className.includes('two-tinymce-div')) {
+            topHeight = (function(c, childDoms) {
+              let value = reuseValue
+              for (let j = 1; j <= c; j++) {
+                value += childDoms[j].offsetHeight
+              }
+              return value
+            })(c, childDoms)
+            index = childDoms[c].className.substring(27)
+          } else {
+            // 获取一级目录距离顶部的高度
+            topHeight = (function(i, oneTinymceDivs) {
+              let value = childDoms[c].offsetHeight
+              for (let j = 0; j < i; j++) {
+                value += oneTinymceDivs[j].offsetHeight
+              }
+              return value
+            })(i, oneTinymceDivs)
+            reuseValue = topHeight
+            index = oneTinymceDivs[i].className.substring(27)
           }
-          return value
-        })(i, oneTinymceDivs)
-        const index = oneTinymceDivs[i].className.substring(27)
-        this.topHeightList.push({ topHeight, index })
+          this.topHeightList.push({ topHeight, index })
+        }
       }
       console.log(this.topHeightList)
     },
     scrollCallback() {
       this.$debounce(() => {
         const top = window.scrollY
-        // console.log(top, "top");
+        console.log(top, 'top')
         try {
           this.topHeightList.forEach((item) => {
-            if (item.topHeight >= top) {
-              console.log(item.index)
+            if (item.topHeight > top) {
               this.directory.map((x) => {
                 if (x.name.index === item.index) {
                   x.name.isCurrent = true
+                  console.log(this.ITEM, 'ITEM')
+                  this.ITEM.name.isCurrent = false
+                  this.ITEM = x
+                } else {
+                  x.name.isCurrent = false
                   x.levalTwoList.map((y) => {
                     if (y.name.index === item.index) {
                       y.name.isCurrent = true
+                      this.ITEM.name.isCurrent = false
+                      this.ITEM = y
                     } else {
                       y.name.isCurrent = false
                     }
                   })
-                } else {
-                  x.name.isCurrent = false
                 }
               })
               console.log(this.directory)
@@ -166,6 +192,10 @@ export default {
       if (e[0].name === '') {
         return false
       }
+    },
+    end() {
+      this.dragging = false
+      this.getTopHeightList()
     },
     checkMove: function(e) {},
     onDel(index, directory) {
@@ -272,10 +302,10 @@ export default {
     }
     .isCurrent {
       & > div {
-        color: red;
+        color: #459df5;
       }
       & > span {
-        color: red;
+        color: #459df5;
       }
     }
   }

@@ -69,7 +69,7 @@ export default {
             {
               name: {
                 content: '<h2>2级目录</h2>',
-                index: '12 ',
+                index: '12',
                 leval: 'two',
                 isCurrent: false
               }
@@ -85,7 +85,7 @@ export default {
             {
               name: {
                 content: '<h2>2级目大苏打录</h2>',
-                index: '14 ',
+                index: '14',
                 leval: 'two',
                 isCurrent: false
               }
