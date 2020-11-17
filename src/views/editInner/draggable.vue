@@ -105,7 +105,7 @@ export default {
       this.timer = setInterval(() => {
         this.getTopHeightList()
         // 隔10秒更新下数组，因为编辑内容后高度就发生变化了
-      }, 10000)
+      }, 1000000)
     }, 1000)
   },
   beforeDestroy() {
@@ -164,15 +164,19 @@ export default {
                 if (x.name.index === item.index) {
                   x.name.isCurrent = true
                   console.log(this.ITEM, 'ITEM')
-                  this.ITEM.name.isCurrent = false
-                  this.ITEM = x
+                  if (this.ITEM !== x) {
+                    this.ITEM.name.isCurrent = false
+                    this.ITEM = x
+                  }
                 } else {
                   x.name.isCurrent = false
                   x.levalTwoList.map((y) => {
                     if (y.name.index === item.index) {
                       y.name.isCurrent = true
-                      this.ITEM.name.isCurrent = false
-                      this.ITEM = y
+                      if (this.ITEM !== y) {
+                        this.ITEM.name.isCurrent = false
+                        this.ITEM = y
+                      }
                     } else {
                       y.name.isCurrent = false
                     }
