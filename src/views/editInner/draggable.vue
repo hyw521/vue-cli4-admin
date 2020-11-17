@@ -105,7 +105,7 @@ export default {
       this.timer = setInterval(() => {
         this.getTopHeightList()
         // 隔10秒更新下数组，因为编辑内容后高度就发生变化了
-      }, 1000000)
+      }, 10000)
     }, 1000)
   },
   beforeDestroy() {
