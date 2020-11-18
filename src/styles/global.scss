@@ -1,0 +1,12 @@
+//搜索所在的div样式
+.search-flex-div{
+  display: flex;
+  padding-top: 20px;
+}
+
+.el-select-dropdown{
+  .el-select-dropdown__item.selected {
+    color: #26baf9;
+    font-weight: bold;
+  }
+}
