@@ -1,13 +1,12 @@
 <template>
-  <div style="padding-bottom: 50px">
+  <div class="container">
     <div class="search-flex-div">
       <searchInput :value="CodeObj" @handleFilter="handleFilter" />
       <searchSelect :value="regObj" @handleFilter="handleFilter" />
       <generalButton
         :value="{
-          className: 'pan-btn blue-btn',
+          className: 'search-button el-icon-search',
           text: '查询',
-          icon: 'el-icon-search',
         }"
       />
     </div>

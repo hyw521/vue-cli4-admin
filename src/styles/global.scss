@@ -2,6 +2,10 @@
 .search-flex-div{
   display: flex;
   padding-top: 20px;
+  .search-button{
+    margin-right: 156px;
+    float: right;
+  }
 }
 
 .el-select-dropdown{
@@ -9,4 +13,11 @@
     color: #26baf9;
     font-weight: bold;
   }
+}
+.container{
+  width: 1315px;
+  height: 780px;
+  background: #ffffff;
+  border-radius: 12px;
+  margin-left: 30px;
 }
