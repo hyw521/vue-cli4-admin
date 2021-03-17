@@ -1,16 +1,20 @@
 <template>
   <div>
     <el-input
+      :ref="value.ref"
       v-model="value[value.key]"
       :clearable="value.clearable"
       :disabled="value.disabled"
       :class="value.className"
       :placeholder="value.placeholder"
       :prefix-icon="value.icon"
-      :suffix-icon="value.suffixIcon"
-      @keyup.13.native="handleFilter"
+      :maxlength="value.maxlength"
+      :show-word-limit="value.showWordLimit"
+      :type="value.type"
+      :autosize="value.autosize"
       @input="input"
-      @clear="clear"
+      @focus="focus"
+      @keyup.native="keyup"
     />
   </div>
 </template>
@@ -27,14 +31,20 @@ export default {
     return {}
   },
   methods: {
-    handleFilter() {
-      this.$emit('handleFilter')
+    input(value) {
+      this.$emit('input', value)
     },
-    input(val) {
-      this.$emit('input', val)
+    focus() {
+      this.$emit('focus')
     },
-    clear() {
-      this.$emit('clear')
+    keyup() {
+      if (this.value.onlyNumber) {
+        this.value[this.value.key] = this.value[this.value.key].replace(
+          /[^\d.]/g,
+          ''
+        )
+      }
+      this.$emit('keyup')
     }
   }
 }
@@ -70,6 +80,19 @@ export default {
     }
   }
 }
+::v-deep {
+  .el-textarea {
+    width: 99% !important;
+    min-height: 70px;
+    .el-textarea__inner {
+      min-height: 70px !important;
+      color: #000000;
+      &:focus {
+        border-color: $blue;
+      }
+    }
+  }
+}
 @media screen and (min-width: 1500px) and (max-width: 1700px) {
   ::v-deep.normal-input {
     width: 180px;
@@ -82,6 +105,12 @@ export default {
   }
 }
 @media screen and (min-width: 1280px) and (max-width: 1499px) {
+  ::v-deep {
+    .el-textarea {
+      width: 99% !important;
+      min-height: 60px;
+    }
+  }
   ::v-deep.normal-input {
     width: 160px;
     height: 32px;

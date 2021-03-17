@@ -1,20 +1,18 @@
 <template>
   <div>
-    <el-input
+    <el-date-picker
       v-model="value[value.key]"
       :clearable="value.clearable"
       :disabled="value.disabled"
       :class="value.className"
       :placeholder="value.placeholder"
       :prefix-icon="value.icon"
-      :suffix-icon="value.suffixIcon"
+      :value-format="value.format"
+      :type="value.dateType"
       @keyup.13.native="handleFilter"
-      @input="input"
-      @clear="clear"
     />
   </div>
 </template>
-
 <script>
 export default {
   props: {
@@ -29,19 +27,13 @@ export default {
   methods: {
     handleFilter() {
       this.$emit('handleFilter')
-    },
-    input(val) {
-      this.$emit('input', val)
-    },
-    clear() {
-      this.$emit('clear')
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/variables.scss';
+@import "@/styles/variables.scss";
 .normal-input {
   ::v-deep.el-input__inner {
     font-size: 14px;
